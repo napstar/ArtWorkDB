@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ArtWorkDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistID" />
+          </Key>
+          <Property Name="ArtistID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Artist" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ArtType">
+          <Key>
+            <PropertyRef Name="ArtTypeID" />
+          </Key>
+          <Property Name="ArtTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Artwork">
+          <Key>
+            <PropertyRef Name="ArtworkID" />
+          </Key>
+          <Property Name="ArtworkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArtTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArtTypeID" Type="int" />
+          <Property Name="ArtistID" Type="int" />
+          <Property Name="CountryID" Type="int" />
+          <Property Name="VendorID" Type="int" />
+          <Property Name="DateCreate" Type="date" />
+          <Property Name="DatePurchased" Type="date" />
+          <Property Name="CurrentLocationID" Type="int" />
+          <Property Name="Levels" Type="int" />
+          <Property Name="Image" Type="image" />
+          <Property Name="PhysicalDimension" Type="nvarchar" MaxLength="50" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="FileExtension" Type="nvarchar" MaxLength="5" />
+          <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Section" Type="int" />
+          <Property Name="RecordCreationDate" Type="datetime" />
+          <Property Name="RecordLastUpdateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="CountryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CurrentLocation">
+          <Key>
+            <PropertyRef Name="CurrentLocationID" />
+          </Key>
+          <Property Name="CurrentLocationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrentLocation" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Levels">
+          <Key>
+            <PropertyRef Name="LevelID" />
+          </Key>
+          <Property Name="LevelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Levels" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Sections">
+          <Key>
+            <PropertyRef Name="SectionID" />
+          </Key>
+          <Property Name="SectionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Section" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VendorID" />
+          </Key>
+          <Property Name="VendorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Vendor" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Artist_Artist">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
+          <End Role="Artist1" Type="Self.Artist" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistID" />
+            </Principal>
+            <Dependent Role="Artist1">
+              <PropertyRef Name="ArtistID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Artist">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="ArtistID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_ArtType">
+          <End Role="ArtType" Type="Self.ArtType" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArtType">
+              <PropertyRef Name="ArtTypeID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="ArtTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_CurrentLocation">
+          <End Role="CurrentLocation" Type="Self.CurrentLocation" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrentLocation">
+              <PropertyRef Name="CurrentLocationID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="CurrentLocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Levels">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="LevelID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="Levels" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Sections">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="SectionID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="Section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VendorID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArtWorkDBModelStoreContainer">
+          <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArtType" EntityType="Self.ArtType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Artwork" EntityType="Self.Artwork" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CurrentLocation" EntityType="Self.CurrentLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Levels" EntityType="Self.Levels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Artist_Artist" Association="Self.FK_Artist_Artist">
+            <End Role="Artist" EntitySet="Artist" />
+            <End Role="Artist1" EntitySet="Artist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Artist" Association="Self.FK_Artwork_Artist">
+            <End Role="Artist" EntitySet="Artist" />
+            <End Role="Artwork" EntitySet="Artwork" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_ArtType" Association="Self.FK_Artwork_ArtType">
+            <End Role="ArtType" EntitySet="ArtType" />
+            <End Role="Artwork" EntitySet="Artwork" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_CurrentLocation" Association="Self.FK_Artwork_CurrentLocation">
+            <End Role="CurrentLocation" EntitySet="CurrentLocation" />
+            <End Role="Artwork" EntitySet="Artwork" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Levels" Association="Self.FK_Artwork_Levels">
+            <End Role="Levels" EntitySet="Levels" />
+            <End Role="Artwork" EntitySet="Artwork" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Sections" Association="Self.FK_Artwork_Sections">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="Artwork" EntitySet="Artwork" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Vendor" Association="Self.FK_Artwork_Vendor">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Artwork" EntitySet="Artwork" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ArtWorkDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistID" />
+          </Key>
+          <Property Name="ArtistID" Type="Int32" Nullable="false" />
+          <Property Name="Artist1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artist11" Relationship="Self.FK_Artist_Artist" FromRole="Artist" ToRole="Artist1" />
+          <NavigationProperty Name="Artist2" Relationship="Self.FK_Artist_Artist" FromRole="Artist1" ToRole="Artist" />
+          <NavigationProperty Name="Artworks" Relationship="Self.FK_Artwork_Artist" FromRole="Artist" ToRole="Artwork" />
+        </EntityType>
+        <EntityType Name="Artwork">
+          <Key>
+            <PropertyRef Name="ArtworkID" />
+          </Key>
+          <Property Name="ArtworkID" Type="Int32" Nullable="false" />
+          <Property Name="AssetNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArtTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArtTypeID" Type="Int32" />
+          <Property Name="ArtistID" Type="Int32" />
+          <Property Name="CountryID" Type="Int32" />
+          <Property Name="DateCreate" Type="DateTime" Precision="0" />
+          <Property Name="DatePurchased" Type="DateTime" Precision="0" />
+          <Property Name="CurrentLocationID" Type="Int32" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="PhysicalDimension" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artist" Relationship="Self.FK_Artwork_Artist" FromRole="Artwork" ToRole="Artist" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_Artwork_Country" FromRole="Artwork" ToRole="Country" />
+          <NavigationProperty Name="CurrentLocation" Relationship="Self.FK_Artwork_CurrentLocation" FromRole="Artwork" ToRole="CurrentLocation" />
+          <Property Name="Levels" Type="Int32" />
+          <NavigationProperty Name="Level" Relationship="ArtWorkDBModel.FK_Artwork_Levels" FromRole="Artwork" ToRole="Level" />
+          <Property Name="VendorID" Type="Int32" />
+          <NavigationProperty Name="Vendor1" Relationship="ArtWorkDBModel.FK_Artwork_Vendor" FromRole="Artwork" ToRole="Vendor" />
+          <NavigationProperty Name="ArtType" Relationship="ArtWorkDBModel.FK_Artwork_ArtType" FromRole="Artwork" ToRole="ArtType" />
+          <Property Name="FileExtension" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="PurchasePrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Section" Type="Int32" />
+          <NavigationProperty Name="Section1" Relationship="ArtWorkDBModel.FK_Artwork_Sections" FromRole="Artwork" ToRole="Section" />
+          <Property Name="RecordCreationDate" Type="DateTime" Precision="3" />
+          <Property Name="RecordLastUpdateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="Country1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artworks" Relationship="Self.FK_Artwork_Country" FromRole="Country" ToRole="Artwork" />
+        </EntityType>
+        <EntityType Name="CurrentLocation">
+          <Key>
+            <PropertyRef Name="CurrentLocationID" />
+          </Key>
+          <Property Name="CurrentLocationID" Type="Int32" Nullable="false" />
+          <Property Name="CurrentLocation1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artworks" Relationship="Self.FK_Artwork_CurrentLocation" FromRole="CurrentLocation" ToRole="Artwork" />
+        </EntityType>
+        <EntityType Name="Level">
+          <Key>
+            <PropertyRef Name="LevelID" />
+          </Key>
+          <Property Name="LevelID" Type="Int32" Nullable="false" />
+          <Property Name="Levels" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artworks" Relationship="ArtWorkDBModel.FK_Artwork_Levels" FromRole="Level" ToRole="Artwork" />
+        </EntityType>
+        <Association Name="FK_Artist_Artist">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
+          <End Role="Artist1" Type="Self.Artist" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistID" />
+            </Principal>
+            <Dependent Role="Artist1">
+              <PropertyRef Name="ArtistID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Artist">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="ArtistID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_CurrentLocation">
+          <End Role="CurrentLocation" Type="Self.CurrentLocation" Multiplicity="0..1" />
+          <End Role="Artwork" Type="Self.Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CurrentLocation">
+              <PropertyRef Name="CurrentLocationID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="CurrentLocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArtWorkDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Artists" EntityType="Self.Artist" />
+          <EntitySet Name="Artworks" EntityType="Self.Artwork" />
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="CurrentLocations" EntityType="Self.CurrentLocation" />
+          <EntitySet Name="Levels" EntityType="Self.Level" />
+          <AssociationSet Name="FK_Artist_Artist" Association="Self.FK_Artist_Artist">
+            <End Role="Artist" EntitySet="Artists" />
+            <End Role="Artist1" EntitySet="Artists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Artist" Association="Self.FK_Artwork_Artist">
+            <End Role="Artist" EntitySet="Artists" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Country" Association="Self.FK_Artwork_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_CurrentLocation" Association="Self.FK_Artwork_CurrentLocation">
+            <End Role="CurrentLocation" EntitySet="CurrentLocations" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Levels" Association="ArtWorkDBModel.FK_Artwork_Levels">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+          <EntitySet Name="Sections" EntityType="ArtWorkDBModel.Section" />
+          <EntitySet Name="Vendors" EntityType="ArtWorkDBModel.Vendor" />
+          <AssociationSet Name="FK_Artwork_Vendor" Association="ArtWorkDBModel.FK_Artwork_Vendor">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+          <EntitySet Name="ArtTypes" EntityType="ArtWorkDBModel.ArtType" />
+          <AssociationSet Name="FK_Artwork_ArtType" Association="ArtWorkDBModel.FK_Artwork_ArtType">
+            <End Role="ArtType" EntitySet="ArtTypes" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Artwork_Sections" Association="ArtWorkDBModel.FK_Artwork_Sections">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="Artwork" EntitySet="Artworks" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Artwork_Levels">
+          <End Type="ArtWorkDBModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="ArtWorkDBModel.Artwork" Role="Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="LevelID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="Levels" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="SectionID" />
+          </Key>
+          <Property Name="SectionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Section1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artworks" Relationship="ArtWorkDBModel.FK_Artwork_Sections" FromRole="Section" ToRole="Artwork" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VendorID" />
+          </Key>
+          <Property Name="VendorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Vendor1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artworks" Relationship="ArtWorkDBModel.FK_Artwork_Vendor" FromRole="Vendor" ToRole="Artwork" />
+        </EntityType>
+        <Association Name="FK_Artwork_Vendor">
+          <End Type="ArtWorkDBModel.Vendor" Role="Vendor" Multiplicity="0..1" />
+          <End Type="ArtWorkDBModel.Artwork" Role="Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VendorID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ArtType">
+          <Key>
+            <PropertyRef Name="ArtTypeID" />
+          </Key>
+          <Property Name="ArtTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artworks" Relationship="ArtWorkDBModel.FK_Artwork_ArtType" FromRole="ArtType" ToRole="Artwork" />
+        </EntityType>
+        <Association Name="FK_Artwork_ArtType">
+          <End Type="ArtWorkDBModel.ArtType" Role="ArtType" Multiplicity="0..1" />
+          <End Type="ArtWorkDBModel.Artwork" Role="Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArtType">
+              <PropertyRef Name="ArtTypeID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="ArtTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Artwork_Sections">
+          <End Type="ArtWorkDBModel.Section" Role="Section" Multiplicity="0..1" />
+          <End Type="ArtWorkDBModel.Artwork" Role="Artwork" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="SectionID" />
+            </Principal>
+            <Dependent Role="Artwork">
+              <PropertyRef Name="Section" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ArtWorkDBModelStoreContainer" CdmEntityContainer="ArtWorkDBEntities1">
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="ArtistID" ColumnName="ArtistID" />
+                <ScalarProperty Name="Artist1" ColumnName="Artist" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artworks">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.Artwork">
+              <MappingFragment StoreEntitySet="Artwork">
+                <ScalarProperty Name="RecordLastUpdateDate" ColumnName="RecordLastUpdateDate" />
+                <ScalarProperty Name="RecordCreationDate" ColumnName="RecordCreationDate" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+                <ScalarProperty Name="Levels" ColumnName="Levels" />
+                <ScalarProperty Name="ArtworkID" ColumnName="ArtworkID" />
+                <ScalarProperty Name="AssetNumber" ColumnName="AssetNumber" />
+                <ScalarProperty Name="ArtTitle" ColumnName="ArtTitle" />
+                <ScalarProperty Name="ArtTypeID" ColumnName="ArtTypeID" />
+                <ScalarProperty Name="ArtistID" ColumnName="ArtistID" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="DatePurchased" ColumnName="DatePurchased" />
+                <ScalarProperty Name="CurrentLocationID" ColumnName="CurrentLocationID" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="PhysicalDimension" ColumnName="PhysicalDimension" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="Country1" ColumnName="Country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrentLocations">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.CurrentLocation">
+              <MappingFragment StoreEntitySet="CurrentLocation">
+                <ScalarProperty Name="CurrentLocationID" ColumnName="CurrentLocationID" />
+                <ScalarProperty Name="CurrentLocation1" ColumnName="CurrentLocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Levels">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.Level">
+              <MappingFragment StoreEntitySet="Levels">
+                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+                <ScalarProperty Name="Levels" ColumnName="Levels" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.Section">
+              <MappingFragment StoreEntitySet="Sections">
+                <ScalarProperty Name="Section1" ColumnName="Section" />
+                <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="Vendor1" ColumnName="Vendor" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArtTypes">
+            <EntityTypeMapping TypeName="ArtWorkDBModel.ArtType">
+              <MappingFragment StoreEntitySet="ArtType">
+                <ScalarProperty Name="ArtType1" ColumnName="ArtType" />
+                <ScalarProperty Name="ArtTypeID" ColumnName="ArtTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

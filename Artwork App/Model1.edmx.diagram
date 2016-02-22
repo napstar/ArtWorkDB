@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f31100e58655443d8955391f14c5ad57" Name="Diagram1">
+        <EntityTypeShape EntityType="ArtWorkDBModel.Artist" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.Artwork" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.Country" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.CurrentLocation" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.Level" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artist_Artist" ManuallyRouted="false" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_Artist" ManuallyRouted="false" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_CurrentLocation" ManuallyRouted="false" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_Levels" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.Section" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.Vendor" Width="1.5" PointX="5.375" PointY="6.875" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_Vendor" />
+        <EntityTypeShape EntityType="ArtWorkDBModel.ArtType" Width="1.5" PointX="7.375" PointY="3.875" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_ArtType" />
+        <AssociationConnector Association="ArtWorkDBModel.FK_Artwork_Sections" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

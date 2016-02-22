@@ -1,0 +1,131 @@
+﻿@model Artwork_App.Artwork
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Artwork</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AssetNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssetNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArtTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vendor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatePurchased)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatePurchased)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhysicalDimension)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhysicalDimension)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist.Artist1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Artist.Artist1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country.Country1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country.Country1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentLocation.CurrentLocation1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentLocation.CurrentLocation1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Level.Levels)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Level.Levels)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendor1.Vendor1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vendor1.Vendor1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArtType.ArtType1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArtType.ArtType1)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ArtworkID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

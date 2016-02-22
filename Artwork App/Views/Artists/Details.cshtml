@@ -1,0 +1,43 @@
+﻿@model Artwork_App.Artist
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Artist</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Artist1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist11.Artist1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Artist11.Artist1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Artist2.Artist1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Artist2.Artist1)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ArtistID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

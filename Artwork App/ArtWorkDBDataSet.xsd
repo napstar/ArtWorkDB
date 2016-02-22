@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ArtWorkDBDataSet" targetNamespace="http://tempuri.org/ArtWorkDBDataSet.xsd" xmlns:mstns="http://tempuri.org/ArtWorkDBDataSet.xsd" xmlns="http://tempuri.org/ArtWorkDBDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ArtWorkDBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ArtWorkDBConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ArtWorkDBConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="TotalValueViewTableAdapter" GeneratorDataComponentClassName="TotalValueViewTableAdapter" Name="TotalValueView" UserDataComponentName="TotalValueViewTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ArtWorkDBConnectionString (Web.config)" DbObjectName="ArtWorkDB.dbo.TotalValueView" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT ArtType, Total FROM dbo.TotalValueView</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ArtType" DataSetColumn="ArtType" />
+              <Mapping SourceColumn="Total" DataSetColumn="Total" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ArtWorkDBDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="ArtWorkDBDataSet" msprop:Generator_UserDSName="ArtWorkDBDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="TotalValueView" msprop:Generator_TableClassName="TotalValueViewDataTable" msprop:Generator_TableVarName="tableTotalValueView" msprop:Generator_TablePropName="TotalValueView" msprop:Generator_RowDeletingName="TotalValueViewRowDeleting" msprop:Generator_RowChangingName="TotalValueViewRowChanging" msprop:Generator_RowEvHandlerName="TotalValueViewRowChangeEventHandler" msprop:Generator_RowDeletedName="TotalValueViewRowDeleted" msprop:Generator_UserTableName="TotalValueView" msprop:Generator_RowChangedName="TotalValueViewRowChanged" msprop:Generator_RowEvArgName="TotalValueViewRowChangeEvent" msprop:Generator_RowClassName="TotalValueViewRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ArtType" msprop:Generator_ColumnVarNameInTable="columnArtType" msprop:Generator_ColumnPropNameInRow="ArtType" msprop:Generator_ColumnPropNameInTable="ArtTypeColumn" msprop:Generator_UserColumnName="ArtType" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Total" msprop:Generator_ColumnVarNameInTable="columnTotal" msprop:Generator_ColumnPropNameInRow="Total" msprop:Generator_ColumnPropNameInTable="TotalColumn" msprop:Generator_UserColumnName="Total" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

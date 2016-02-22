@@ -1,0 +1,992 @@
+﻿@model Artwork_App.ViewModels.ArtworkViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/themes/base/autocomplete.css" rel="stylesheet" />
+<link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+<link href="~/Content/themes/base/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/MyScripts/ArtistViewModelObject.js"></script>
+<link href="~/Content/jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet" />
+@*<link href="~/Content/themes/base/all.css" rel="stylesheet" />*@
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+<script src="~/Scripts/MyScripts/CustomArtWorkValidation.js"></script>
+
+<script src="~/Scripts/MyScripts/SectionsViewModel.js"></script>
+<script src="~/Scripts/MyScripts/CountryViewModel.js"></script>
+<script src="~/Scripts/MyScripts/LocationViewModel.js"></script>
+<script src="~/Scripts/MyScripts/VendorModelObject.js"></script>
+<style>
+    /*this thead style form thead alert,hide*/
+    .alert {
+        display: none;
+    }
+
+    .form-horizontal .control-label {
+        /* text-align:right; */
+        text-align: left;
+        background-color: #ffa;
+    }
+</style>
+<div class="page-header">
+    <h2>Edit ArtWork Info</h2>
+</div>
+<p>
+    Please fill in and submit the form below.
+</p>
+
+@Html.ValidationSummary(true)
+@*<div class="alert alert-success alert-dismissable" id="formAlert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    Success! message sent successfully.
+</div>*@
+
+ 
+@using (Html.BeginForm("Edit", "ArtWorks", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+   
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+       
+        @Html.HiddenFor(model => model.ArtWorkID)
+        <div class="form-group" style=" margin: 0 auto;">
+            @*@Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })*@
+          
+
+        </div>
+     
+      
+      
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssetNumber, htmlAttributes: new { @class = "control-label col-sm-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AssetNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AssetNumber, "", new { @class = "text-danger" })
+            </div>
+         
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <img src="/ArtWorks/ShowPhoto/@Model.ArtWorkID" alt="" height="250" width="250" class="img-thumbnail" />
+            </div>
+            @*<img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = Model.ArtWorkID })' width="100" style="padding-top:50px" />*@
+
+            @*@{
+
+            }
+            <img src="@imageSrc" alt="Image" />
+            <img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = Model.ArtWorkID })' width="100" style="padding-top:50px" />
+            <img src='@Model.Photo' />*@
+            @*@if (Model.Photo == null)
+            {
+                <img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = Model.ArtWorkID })' width="150" alt="noimage" />
+            }
+            else
+            {
+                <img src='@Model.Photo' />
+            }*@
+
+        </div>
+    
+ 
+      
+          
+            <div class="form-group">
+                @Html.LabelFor(model => model.ArtTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ArtTitle, new { htmlAttributes = new { @class = "form-control", @cols = 80, @rows = 2, style = "min-width:600px" } })
+                    @Html.ValidationMessageFor(model => model.ArtTitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ArtTypeID, "ArtType", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.DropDownList("ArtTypeID", null, htmlAttributes: new { @class = "form-control" })*@
+                    @Html.DropDownListFor(x => x.ArtTypeID, new SelectList(Model.ArtTypes, "ArtTypeID", "ArtTypeName"), "Select Art Type", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ArtTypeID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <style>
+                .ui-autocomplete {
+                    z-index: 1000;
+                }
+            </style>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ArtistID, "Artist", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.ArtistID, new SelectList(Model.Artists, "ArtistID", "ArtistName"), "Select Artist", new { @class = "form-control", style = "display:inline" })
+                    <div style="display:inline;">
+                        <input style="display:inline-block" type="button" id="btnSubmit" value="Add Artist" class="btn btn-default" />
+                        <div style="display:none;" id="mypopout2" class="ui-widget">
+
+                            <input class="mypopout2" type="text" name="artistNames" id="artistNames"><input type="button" id="btnAddSubmit" value="Add" style="display:inline-block" />
+                            <label for="artistNames" id="lblartistNames"></label>
+                            <img src="~/Images/closeImg.png" wdith="20px" height="20px" class="closePopout" affecteditem="mypopout2" />
+
+
+
+                        </div>
+                        <div style="display:none;" id="divAdded">artistadded</div>
+                        @Html.Hidden("selected-customer")
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ArtistID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CountryID, "Country", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), "Select Country", new { @class = "form-control", style = "display:inline" })
+                    <div style="display:inline-block">
+                        <input style="display:inline-block" type="button" id="btnshowPopUpCountry" value="Add Country" class="btn btn-default" />
+                        <div style="display:none;" id="popoutCountry2" class="ui-widget">
+
+                            <input class="popoutCountry" type="text" name="newcountryName" id="newcountryName"/>
+                            <input type="button" id="btnAddSubmitCountry" value="Add" style="display:inline-block" />
+                            <label for="newcountryName" id="lblcountryNames"></label>
+
+                            <img src="~/Images/closeImg.png" wdith="20px" height="20px" class="closePopout" affecteditem="popoutCountry2" />
+
+
+                        </div>
+                        <div style="display:none;" id="divAdded">artistadded</div>
+                        @Html.Hidden("selected-customer")
+                    </div>
+                        @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+                    </div>
+            </div>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                    @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PurchasePrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PurchasePrice, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PurchasePrice, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DatePurchased, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DatePurchased, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                    @Html.ValidationMessageFor(model => model.DatePurchased, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CurrenTLocation, "Location", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.CurrenTLocation, new SelectList(Model.CurrentLocations, "LocationID", "LocationName"), "Select Location", new { @class = "form-control",style = "display:inline" })
+                    <div style="display:inline">
+                        <input style="display:inline" type="button" id="btnshowPopUpLocation" value="Add Location" class="btn btn-default" />
+                        <div style="display:none;" id="popoutLocation2" class="ui-widget">
+
+                            <input class="popoutLocation" type="text" name="newLocationName" id="newLocationName" />
+                            <input type="button" id="btnAddSubmitLocation" value="Add" style="display:inline-block" />
+                            <label for="newLocationName" id="lblLocationNames"></label>
+                            <img src="~/Images/closeImg.png" wdith="20px" height="20px" class="closePopout" affecteditem="popoutLocation2" />
+
+
+
+                        </div>
+                        <div style="display:none;" id="divAddedLocation">artistadded</div>
+                        @Html.Hidden("selected-customer")
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CurrenTLocation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LevelID, "Levels", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.LevelID, new SelectList(Model.Levels, "LevelID", "LevelName"), "Select Level", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LevelID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SectionID, "Section", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(x => x.SectionID, new SelectList(Model.Sections, "SectionID", "SectionName"), "Select Section", new { @class = "form-control", style = "display:inline" })
+                <div style="display:inline">
+                    <input style="display:inline" type="button" id="btnshowPopUpSection" value="Add Section" class="btn btn-default" />
+                    <div style="display:none;" id="popoutSection2" class="ui-widget">
+                        <input class="popoutSection" type="text" name="newSectionName" id="newSectionName" />
+                        <input type="button" id="btnAddSubmitSection" value="Add" style="display:inline-block" />
+                        <img src="~/Images/closeImg.png" wdith="20px" height="20px" class="closePopout" affecteditem="popoutSection2" />
+                    </div>
+                </div>
+                <div style="display:none;" id="divAddedLocation">Section added</div>
+                @Html.ValidationMessageFor(model => model.SectionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Image, new { type = "file", name = "upload", id = "fileUpload", style = "display:inline" })
+                <div style="display:none;float: right;width:60% " id="divImagPreView">
+                    <img id="imgPreview" alt="Preview Image" src="" width="300" height="250" style="display: inline;" />
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <style type="text/css">
+            img#imgPreview {
+                filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+            }
+        </style>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhysicalDimension, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PhysicalDimension, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PhysicalDimension, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VendorID, "Vendor", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(x => x.VendorID, new SelectList(Model.Vendors, "VendorID", "VendorName"), "Select Vendor", new { @class = "form-control", style = "display:inline" })
+                    <div style="display:inline">
+                        <input style="display:inline" type="button" id="btnshowPopUpVendor" value="Add Vendor" class="btn btn-default" />
+                        <div style="display:none;" id="popoutVendor2" class="ui-widget">
+
+                            <input class="popoutVendor" type="text" name="newVendorName" id="newVendorName" />
+                            <input type="button" id="btnAddSubmitVendor" value="Add" style="display:inline-block" />
+                            <label for="newVendorName" id="lblVendorNames"></label>
+                            <img src="~/Images/closeImg.png" wdith="20px" height="20px" class="closePopout" affecteditem="popoutVendor2" />
+
+
+
+                        </div>
+                        <div style="display:none;" id="divAddedLocation">Vendor added</div>
+                        @Html.Hidden("selected-customer")
+                    </div>
+                    @Html.ValidationMessageFor(model => model.VendorID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control", @cols = 80, @rows = 10, style = "min-width:600px"} })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+    @*<div class="form-group">
+        @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <img src="/ArtWorks/ShowPhoto/@Model.ArtWorkID" alt="" height="50" width="50" class="img-thumbnail" />
+            </div>
+            *<img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = Model.ArtWorkID })' width="100" style="padding-top:50px" />
+
+           
+            <img src="@imageSrc" alt="Image" />
+            <img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = Model.ArtWorkID })' width="100" style="padding-top:50px" />
+            <img src='@Model.Photo' />*@
+            @*@if (Model.Photo == null)
+        {
+            <img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = Model.ArtWorkID })' width="150" alt="noimage" />
+        }
+        else
+        {
+            <img src='@Model.Photo' />
+        }
+
+    </div>*@
+}
+<style>
+    /*style for full screen*/
+    
+                #Fullscreen {
+
+                    height: 100%;
+
+                    display: none;
+
+                    position:fixed;
+
+                    top:0;
+
+                    right:0;
+
+                    bottom:0;
+
+                    left:0;
+
+                    /* I made a 50% opacity black tile background for this 
+                     div so it would seem more... modal-y*/
+
+                    background: transparent url('http://asherman1986-001-site2.smarterasp.net/Images/SiteImages/bgTile_black25.png') repeat;
+
+                }
+#Fullscreen img{
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+</style>
+<div id="Fullscreen">
+    <img src="" alt="" />
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(function () { // will trigger when the document is ready
+            //  $('.date-picker').datepicker(); //Initialise any date pickers
+            $("#DateCreated").datepicker({ dateFormat: 'dd/mm/yy' });
+            $("#DatePurchased").datepicker({ dateFormat: 'dd/mm/yy' });
+        });
+    </script>
+    <script>
+        //add artist script
+
+        $(function () {
+            
+        });
+
+    </script>
+    <script src="~/Scripts/MyScripts/CustomArtWorkValidation.js"></script>
+    <script>
+    $(window).load(function () {
+        //auto complete for location
+        var url = '@(Url.Action("GetAllArtists", "ArtWorks"))';
+        $("#artistNames").autocomplete({
+            source: '@(Url.Action("GetAllArtists", "ArtWorks"))',
+        minLength: 3,
+        select: function (event, ui) {
+
+            event.preventDefault();
+
+            $("#artistNames").val(ui.item.label);
+            $("#lblartistNames").val(ui.item.value);
+        },
+        focus: function (event, ui) {
+            event.preventDefault();
+            $("#artistNames").val(ui.item.label);
+        }
+    });
+    $("#newLocationName").autocomplete({
+        source: '@Url.Action("GetAllLocations")',
+        minLength: 3,
+        select: function (event, ui) {
+
+            event.preventDefault();
+
+            $("#newLocationName").val(ui.item.label);
+            $("#lblLocationNames").val(ui.item.value);
+        },
+        focus: function (event, ui) {
+            event.preventDefault();
+            $("#newLocationName").val(ui.item.label);
+        }
+    });
+    //auto complete for country
+    $("#newcountryName").autocomplete({
+        source: '@Url.Action("GetAllCountries","ArtWorks")',
+        minLength: 3,
+        select: function (event, ui) {
+
+            event.preventDefault();
+
+            $("#newcountryName").val(ui.item.label);
+            $("#lblcountryNames").val(ui.item.value);
+        },
+        focus: function (event, ui) {
+            event.preventDefault();
+            $("#newcountryName").val(ui.item.label);
+        }
+    });
+    //auto complete for vendor
+    $("#newVendorName").autocomplete({
+        source: '@Url.Action("GetAllVendors", "ArtWorks")',
+        minLength: 3,
+        select: function (event, ui) {
+
+            event.preventDefault();
+
+            $("#newVendorName").val(ui.item.label);
+            $("#lblVendorNames").val(ui.item.value);
+        },
+        focus: function (event, ui) {
+            event.preventDefault();
+            $("#lblVendorNames").val(ui.item.label);
+        }
+    });
+        //auto complete for section
+        $("#newSectionName").autocomplete({
+            source: '@Url.Action("GetAllSections", "Sections")',
+            minLength: 3,
+            select: function (event, ui) {
+
+                event.preventDefault();
+
+                $("#newSectionName").val(ui.item.label);
+                $("#lblSectionsNames").val(ui.item.value);
+            },
+            focus: function (event, ui) {
+                event.preventDefault();
+                $("#newSectionName").val(ui.item.label);
+            }
+        });
+    //end of auto complete
+
+
+
+    //open image on full screen
+    $(".img-thumbnail").click(function () {
+        //make the height of the full screen,the height of the page
+        if ($(document).outerWidth() >= 1030) {
+            $("#Fullscreen").css('height', $(document).outerWidth() + 'px');
+
+
+            $("#Fullscreen").css('width', $(document).outerWidth() + 'px');
+        }
+        else {
+            var width = $(document).outerWidth() / 3;
+            var height = ($(document).outerHeight() / 2) - 100;
+            $("#Fullscreen").css('width', width + 'px');
+            $("#Fullscreen").css('height', height + 'px');
+        }
+
+        // $("#Fullscreen").css('height', $(document).outerWidth() + 'px');
+        // $("#Fullscreen").css('height', '800px');
+        //get the src
+        var imgSrc = $(this).attr('src');
+
+        $('#Fullscreen img').attr('src', imgSrc);
+        $("#Fullscreen").fadeIn();
+
+    });
+    //click on full screen to close the the image full screen
+    $('#Fullscreen').click(function () {
+        // alert($(this).id);
+        $(this).fadeOut(); //this will hide the fullscreen div if you click away from the image.
+    });
+
+    $("#btnSubmit").click(function () {
+        popout();
+    });
+
+    $("#btnAddSubmit").click(function () {
+        //////debugger;
+        //get the artist text
+        var chosenArtist = $("#artistNames").val();
+        if (chosenArtist) {
+            //check if value exist in artist tabel
+            var artistObj = new ArtistViewModel();
+            var retVal = artistObj.DoesThisArtistExist(chosenArtist.trim());
+            
+            if (retVal <= 0) {
+
+                //add to artist table
+                var insertArtist = artistObj.InsertArtist(chosenArtist.trim());
+                if (insertArtist.ArtistID>=1) {
+                    //  alert(insertArtist.ArtistName+" was created");
+                //    $('.alert').html(insertArtist.ArtistName + " was created").show().delay(5000).fadeOut("fast");
+                //    $("#artistNames").val('');
+                //   // $("#mypopout2").css("display", "none");
+                //    /*$("#divAdded").show().css('display','inline').fadeIn("slow");
+                //$("#divAdded").delay(6000);
+                //  $("#divAdded").css("display", "none");*/
+                //    $("#mypopout2").css("display", "none").fadeOut("slow");
+
+                    //   $("#mypopout2").css("visibility", "visible").css('display', 'inline').show();
+                  //  $('#divAdded').css('display', 'inline').fadeIn('slow').delay(4000).fadeOut('slow');
+                    //clear ddl and rebind
+                  
+                    // $("select[id$=ArtistID] > option").remove();
+                    var dropdown = $('#ArtistID');
+                         dropdown.empty();
+      
+
+                      dropdown.append($("<option>").val(0).text("–Select–"));
+                           $.ajax({
+                        type: "POST",
+                        url: "/Artist/GetAllArtists",
+
+                        success: function (result) {
+                            ////////debugger;
+                                   
+                            for (var i = 0; i < result.length; i++) {
+                                dropdown.append($("<option></option>").attr("value", result[i].value).text(result[i].label));
+                            }
+                        }
+                    });
+                }
+                else {
+                    $('.alert').html(chosenArtist + " was created").show().delay(5000).fadeOut("fast");
+                }
+                //////////////////////debugger;
+              
+            }
+            else {
+                //show error here ofr eists already
+                //////////////////////debugger;
+                 alert("The Artist " + chosenArtist + " already exists");
+               // $('.alert').html(insertArtist.ArtistName + " was created").show().delay(5000).fadeOut("fast");
+            }
+        }
+        else {
+            //show error here for empty string
+            //////////////////////debugger;;
+            alert("Artist name cannot be empty");
+        }
+       
+        //var artworkID = $("#ArtWorkID").val()
+        //alert(artworkID);
+        //$.post("Artworks/Edit", { id: artworkID });
+    });
+    function popout() {
+        
+        $("#mypopout2").css("visibility", "visible").css('display', 'inline').css("opacity","1.0").show();
+
+        $(".mypopout").show("slide", { direction: "left" }, 500);
+
+    }
+   
+
+
+    //click event for add new new vendors
+    $("#btnAddSubmitVendor").click(function () {
+        ////////////////debugger;
+        var chosenVendor = $("#newVendorName").val();
+        if (chosenVendor) {
+            //does this arist exist?
+            var vendorObj = new VendorViewModel();
+            var doesThisVendorExist = vendorObj.DoesThisVendorExist(chosenVendor.trim());
+            if (doesThisVendorExist < 1) {
+                //add vendor
+                var newVendor = vendorObj.InsertVendor(chosenVendor.trim());
+                ////////////////debugger;
+                if (newVendor) {
+                    if (newVendor.VendorID >= 1) {
+                        ////////////////debugger;
+                        //clear the vendors ddl and rebind
+                        var dropdown = $('#VendorID');
+                        dropdown.empty();
+                       
+                        $.ajax({
+                            type: "POST",
+                            url: "/Vendors/GetAllVendors",
+
+                            success: function (result) {
+                                ////////debugger;
+                                   
+                                for (var i = 0; i < result.length; i++) {
+                                    dropdown.append($("<option></option>").attr("value", result[i].value).text(result[i].label));
+                                }
+                            }
+                        });
+                        //set selected item;
+                        //if (index == newVendor.VendorID) {
+                        //    $(this).attr("selected", true);
+                        //}
+                        $("VendorID#elem").attr('selectedIndex', newVendor.VendorID);
+
+                        $("#newVendorName").val('');
+                        $("#popoutVendor2").css("display", "none");
+                       
+                        $("#popoutVendor2").css("display", "none").fadeOut("slow");
+
+                    }
+                    else {
+                        ////////////////debugger;
+                        //could not insert new vendor
+                        alert("Error in creating new Vendor");
+                    }
+                }
+                else {
+                    alert("Error in Creating Vendor");
+                }
+
+            }
+            else {
+                ////////////////debugger;
+                alert("This Vendor alreday exists");
+            }
+        }
+        else {
+            alert('Vendor Name' + ' cannot be empty or null');
+        }
+    });
+
+        //insert for new section
+   
+    //click event for add venor
+    $("#btnshowPopUpVendor").click(function () {
+        popuOutVendor();
+    });
+
+
+
+
+
+
+    //button click for add location
+    $("#btnshowPopUpLocation").click(function () {
+
+        popuOutLocation();
+
+
+
+    });
+        //open new section to add new new for  sections
+    $("#btnshowPopUpSection").click(function () {
+
+        popuOutSection();
+    });
+    //click for adding new location to the ddl
+    $("#btnAddSubmitLocation").click(function () {
+        //get new location name
+       // ////debugger;
+        var newLocationStr = $("#newLocationName").val();
+        if (newLocationStr) {
+            //does the new location exist?
+            var locationObj = new LocationViewModel();
+            var doesArtistExistCount = locationObj.DoesThisLocationExist(newLocationStr.trim());
+            if (doesArtistExistCount <= 0) {
+                var retVal = locationObj.InsertNewLocation(newLocationStr.trim());
+                ////////////////////debugger;
+                if (retVal.LocationID >= 1) {
+                    //success clear the text box
+                    $("#newLocationName").val("");
+                    var newLocationID = retVal.LocationID;
+                    //rebind ddl location:CurrenTLocation
+                    ////////////////////debugger;
+                    
+                        ////////////////////debugger;
+                        var dropdown = $('#CurrenTLocation');
+                        dropdown.empty();
+                      //  ////debugger;
+                        $.ajax({
+                            type: "POST",
+                            url: "/CurrentLocation/GetAllLocations",
+                            async:true,
+                            success: function (result) {
+                                ////////debugger;
+
+                                for (var i = 0; i < result.length; i++) {
+                                    dropdown.append($("<option></option>").attr("value", result[i].value).text(result[i].label));
+                                     
+                                }
+                            }
+                        });
+
+                //    ////debugger;
+                    //set the newly inserted location as the selected item
+                    //    dropdown.prop('selectedIndex', retVal.LocationID);
+                   // var selectedText = retVal.LocationName;
+                   // ////debugger;
+                   
+                    $("#CurrenTLocation").val(newLocationID);
+                    $("#popoutLocation").val('');
+                    $("#popoutLocation2").css("display", "none");
+
+                    $("#popoutLocation2").css("display", "none").fadeOut("slow");
+                }
+                else {
+                    alert("Error in Inserting new location");
+                }
+            }
+            else {
+                alert(newLocationStr.concat(" already exists!!"));
+            }
+
+
+        }
+        else {
+            alert("Please enter new location");
+        }
+
+
+    });
+
+    //  //////////////////////debugger;
+    //auto complete artistNames Url.Action("GetAllArtists", "ArtWorks")
+    $("#btnshowPopUpCountry").click(function () {
+
+        //show popup
+        ////////////////////debugger;
+        poupoutMyCountryDiv();
+        //if ($("#popoutCountry2").is(":visible")) {
+        //    //get country name
+        //    var chosenCountry = $("#newcountryName").val();
+        //    if (chosenCountry) {
+        //        var countryObj = new CountryViewModel();
+        //        var doesThisCountryExistVal = countryObj.DoesThisCountryExist(chosenCountry);
+        //        if (doesThisCountryExistVal <= 0) {
+        //            //no..proceed to insert
+        //            var newCountry = countryObj.InsertCountry(chosenCountry);
+        //        }
+        //        else {
+        //            //yes..it exist alredy
+        //            alert("This country exist already");
+        //        }
+        //    }
+        //    else {
+
+        //    }
+        //}
+
+
+    });
+    //add country
+    //auto complete artistNames Url.Action("GetAllArtists", "ArtWorks")
+    $("#btnAddSubmitCountry").click(function () {
+        //////debugger;
+        try {
+            var newCountryToInsertName = $("#newcountryName").val();
+
+
+            //add to db
+            if (newCountryToInsertName) {
+                var countryObj = new CountryViewModel();
+
+                //does this country exist?
+                var doesThisCountrExist = countryObj.DoesThisCountryExist(newCountryToInsertName.trim());
+                if (doesThisCountrExist >= 1) {
+                    throw 'This country already exists';
+                }
+                else {
+                    //clear countrt ddl
+                    var retVal = countryObj.InsertCountry(newCountryToInsertName);
+                    if (retVal) {
+                        if (retVal.CountryID >= 1) {
+                            //repopulate ddl
+                            var dropdown = $('#CountryID');
+                            dropdown.empty();
+                           
+                        
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/Country/GetAllCountries",
+
+                                success: function (result) {
+                                    ////////debugger;
+
+                                    for (var i = 0; i < result.length; i++) {
+                                        dropdown.append($("<option></option>").attr("value", result[i].value).text(result[i].label));
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Error in adding country");
+                        }
+                    }
+                    else {
+                        alert("Error in adding country");
+                    }
+
+                }
+
+
+
+            }
+            else {
+                alert("Country Name cannot empty");
+            }
+        } catch (e) {
+
+            alert(e);
+        }
+
+
+
+
+    });
+
+    //click e evnt to close all popouts
+    $(".closePopout").click(function () {
+
+
+        //get attribute
+        var divToClose = $(this).attr("affecteditem");
+
+        var item = $("#" + divToClose);
+        if (item) {
+
+            if (item.is(":visible")) {
+                //close the div
+                item.css({
+                    "opacity": "0"
+         , "display": "inline"
+                }).hide().animate({ opacity: 0 });
+            }
+        }
+    });
+        //insert for new section
+    $("#btnAddSubmitSection").click(function () {
+        ////debugger;
+        try {
+            var newSectionName = $("#newSectionName").val();
+            if (newSectionName) {
+                var SectionViewModel = new SectionsViewModel();
+                var retVal = SectionViewModel.InsertSection(newSectionName);
+                if (retVal >= 1) {
+                    //repopulate ddl section
+                    var dropdown = $('#SectionID');
+                    dropdown.empty();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Sections/RepopulateSections",
+
+                        success: function (result) {
+                            ////debugger;
+
+                            for (var i = 0; i < result.length; i++) {
+                                dropdown.append($("<option></option>").attr("value", result[i].value).text(result[i].label));
+                            }
+                        }
+                    });
+                    //set the newly inserted location as the selected item
+                    // $("#CurrenTLocation").prop('selectedIndex', retVal.LocationID);
+                    dropdown.val(retVal.LocationName);
+                    $("#newSectionName").val('');
+                    $("#popoutSection2").css("display", "none");
+
+                    $("#popoutSection2").css("display", "none").fadeOut("slow");
+                }
+            }
+            else {
+                alert("Section Name cannot be empty");
+            }
+
+        } catch (e) {
+            alert(e);
+        }
+
+    });
+    function poupoutMyCountryDiv() {
+        $("#popoutCountry2").css("visibility", "visible").css('display', 'inline').css("opacity", "1.0").show();
+
+        $(".popoutCountry").show("slide", { direction: "left" }, 500);
+    }
+
+    function popuOutLocation() {
+        $("#popoutLocation2").css("visibility", "visible").css('display', 'inline').css("opacity", "1.0").show();
+
+        $(".popoutCountry").show("slide", { direction: "left" }, 500);
+    }
+    function popuOutVendor() {
+        $("#popoutVendor2").css("visibility", "visible").css('display', 'inline').css("opacity", "1.0").show();
+
+        $(".popoutVendor").show("slide", { direction: "left" }, 500);
+    }
+    function popuOutSection() {
+        $("#popoutSection2").css("visibility", "visible").css('display', 'inline').css("opacity", "1.0").show();
+
+        $(".popoutSection").show("slide", { direction: "left" }, 15500);
+    }
+    //show image on file upload
+    $('#fileUpload').on('change', function () {
+
+        //  //////////////////debugger;
+        $("img#imgPreview").attr('src', ''); //First remove the image src if already selected
+        //To check if uploaded file is image only..
+        var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            alert("Only image files are allowed!");
+            //if  the  image show then hide it
+            if ($("#divImagPreView").is(":visible")) {
+                $("#divImagPreView").css({
+                    "opacity": "0"
+           , "display": "inline"
+                }).hide().animate({ opacity: 0 });
+            }
+            return false;
+        }
+
+
+        //To check if browser version IE <= 9, apply image filter type to support <= IE9..
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie >= 0) {
+            var img = $('img#imgPreview')[0];
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = $(this).val();
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').sizingMethod = 'scale';
+            //add jquery animation rihgt here
+            $("#divImagPreView").css({
+                "opacity": "0"
+            , "display": "inline"
+            }).show().animate({ opacity: 1 });
+
+        } else {
+            //To check 'FileReader' is supported by browser or not..
+            if (typeof (FileReader) != 'undefined') {
+                var frImage = new FileReader();
+                frImage.onload = function (e) {
+                    $("img#imgPreview").attr('src', e.target.result);
+                }
+                frImage.readAsDataURL($(this)[0].files[0]);
+                $("#divImagPreView").css({
+                    "opacity": "0"
+          , "display": "inline"
+                }).show().animate({ opacity: 1 });
+            } else {
+                alert("Your browser does not support FileReader!");
+            }
+        }
+    });
+    });
+
+
+    </script>
+<script type="text/javascript">
+    //this script will limit the number of lines in textbox
+    var keynum, lines = 1;
+    $("#ArtTitle").keypress(function () {
+        limitTextarea(this, 2, 80)
+    });
+    function limitTextarea(textarea, maxLines, maxChar) {
+        var lines = textarea.value.replace(/\r/g, '').split('\n'), lines_removed, char_removed, i;
+        if (maxLines && lines.length > maxLines) {
+            lines = lines.slice(0, maxLines);
+            lines_removed = 1
+        }
+        if (maxChar) {
+            i = lines.length;
+            while (i-- > 0) if (lines[i].length > maxChar) {
+                lines[i] = lines[i].slice(0, maxChar);
+                char_removed = 1
+            }
+            if (char_removed || lines_removed) {
+                textarea.value = lines.join('\n')
+            }
+        }
+    }
+</script>
+}

@@ -1,0 +1,163 @@
+﻿@*@model IEnumerable<Artwork_App.ViewModels.ArtworkViewModel>*@
+ @model Artwork_App.ViewModels.PagedDataSet<Artwork_App.ViewModels.ArtworkViewModel>
+ 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //    alert('Index ready');
+      
+        //  $('.date-picker').datepicker();
+        @*$(".pagination").click(function () {
+            // $("#artWorkVM").empty();
+            $("artWorkVM").find("tr:gt(0)").remove();
+            var Page_No = parseInt($(this).html());
+           
+
+            $.ajax({
+                url: '@Url.Action("Index")',
+                data: { "Page_No": Page_No },
+                success: function (data) {
+                    $("#artWorkVM").html(data);
+                }
+            });
+        });*@
+
+        $(".pagination li").on("click", function () {
+            //event.preventDefault();
+            //alert($(this).text());
+            var Page_No = parseInt($(this).text());
+            //clear table
+            $("#artWorkVM").empty();
+            //debugger;
+            $.ajax({
+                url: '@Url.Action("GetDataPagination")',
+                data: { "Page_No": Page_No },
+                success: function (data) {
+                    //debugger;
+                    $("#artWorkVM").html(data);
+                }
+            });
+        });
+    });
+</script>
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create", "Create", "Artworks")
+</p>
+<table class="table" id="artWorkVM">
+    <tr>
+        <th>
+           
+            Asset Number
+        </th>
+        <th>
+          
+            Title Of Art
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Vendor)
+        </th>*@
+       
+        <th>
+            @*@Html.DisplayNameFor(model => model.CurrenTLocation)*@
+            Location
+        </th>
+       
+      <th></th>
+        <th></th>
+      
+      
+    </tr>
+
+    @if (Model.Items!=null)
+    {
+        foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssetNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArtTitle)
+                </td>
+
+
+                <td>
+                    @{
+            // var locationID = item.CurrenTLocation.Value;
+            string locationName = "n/a";
+            if (item.CurrenTLocation.HasValue)
+            {
+                using (Artwork_App.ViewModels.CurrentLocationViewModel Location = new Artwork_App.ViewModels.CurrentLocationViewModel())
+                {
+                    locationName = Location.GetObject(item.CurrenTLocation.Value).LocationName;
+                }
+            }
+
+
+
+                    }
+                    @Html.DisplayFor(modelItem => locationName)
+                </td>
+
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Image)*@
+                    @*@if (item.Photo == null)
+                        {
+                          <img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = item.ArtWorkID })' width="150" alt="noimage"/>
+                        }
+                        else
+                        {
+                          <img src='@Url.Action("GetImageFromDataBase", "ArtWorks", new { id = item.ArtWorkID })' width="150" alt="noimage" />
+                        }*@
+
+                    @*@{
+                        string imageSrc = null;
+                        byte[] photo = (item.Photo);
+
+                        if (photo != null)
+                        {
+                            MemoryStream ms = new MemoryStream();
+                            ms.Write(photo, 78, photo.Length - 78);
+                            string imageBase64 = Convert.ToBase64String(ms.ToArray());
+                            imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
+                        }
+                        <img src="@imageSrc" alt="Image" />
+                        }*@
+                    <img src="/ArtWorks/ShowPhoto/@item.ArtWorkID" alt="" width="50px" height="50px" class="img-thumbnail" />
+
+
+                </td>
+
+
+
+
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ArtWorkID })
+
+                </td>
+            </tr>
+        }
+
+    }
+   
+</table>
+@*<div class="col-sm-10">
+    <div class="center">*@
+@*@Html.PagedListPager(Model, Page_No => Url.Action("GetDataPagination",
+    new { Page_No }))
+
+    </div>
+</div>*@
+
+ 
+
